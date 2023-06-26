@@ -4,6 +4,7 @@ import os
 from difflib import get_close_matches
 import sys
 import json as json_module
+import warnings
 
 from ploomber_scaffold import scaffold as scaffold_project
 import click
@@ -11,6 +12,15 @@ import click
 CLICK_VERSION = int(click.__version__[0])
 # NOTE: package_name was introduced in version 8
 VERSION_KWARGS = dict(package_name="ploomber") if CLICK_VERSION >= 8 else dict()
+
+
+def cloud_deprecation_warning():
+    warnings.warn(
+        "ploomber cloud will be deprecated and replaced with a new system. "
+        "If you need help migrating, send us a "
+        "message to: https://ploomber.io/community",
+        FutureWarning,
+    )
 
 
 def _suggest_command(name: str, options):
@@ -412,6 +422,7 @@ def set_key(user_key):
     """
     from ploomber import cli as cli_module
 
+    cloud_deprecation_warning()
     cli_module.cloud.set_key(user_key)
 
 
@@ -424,6 +435,7 @@ def get_key():
     """
     from ploomber.cloud.key import get_key
 
+    cloud_deprecation_warning()
     key = get_key()
 
     if key:
@@ -447,6 +459,7 @@ def cloud_build(force, json):
     from ploomber.cloud.api import PloomberCloudAPI
     from ploomber.telemetry import telemetry
 
+    cloud_deprecation_warning()
     api = PloomberCloudAPI()
     runid = api.build(
         force,
@@ -478,6 +491,7 @@ def cloud_task(task_name, force, json):
     from ploomber.cloud.api import PloomberCloudAPI
     from ploomber.telemetry import telemetry
 
+    cloud_deprecation_warning()
     api = PloomberCloudAPI()
     runid = api.build(
         force,
@@ -505,6 +519,7 @@ def cloud_list(json):
     from ploomber.cloud.api import PloomberCloudAPI
     from ploomber.telemetry import telemetry
 
+    cloud_deprecation_warning()
     api = PloomberCloudAPI()
     api.runs(json=json)
 
@@ -532,6 +547,7 @@ def cloud_status(run_id, watch, json, summary):
     from ploomber.cloud.api import PloomberCloudAPI
     from ploomber.telemetry import telemetry
 
+    cloud_deprecation_warning()
     api = PloomberCloudAPI()
 
     if watch:
@@ -586,6 +602,7 @@ def cloud_products(delete, json):
     from ploomber.cloud.api import PloomberCloudAPI
     from ploomber.telemetry import telemetry
 
+    cloud_deprecation_warning()
     api = PloomberCloudAPI()
 
     if delete:
@@ -615,6 +632,7 @@ def cloud_download(pattern, summary):
     from ploomber.cloud.api import PloomberCloudAPI
     from ploomber.telemetry import telemetry
 
+    cloud_deprecation_warning()
     api = PloomberCloudAPI()
     api.products_download(pattern, summary=summary)
 
@@ -654,6 +672,7 @@ def cloud_logs(run_id, image, watch, task):
     from ploomber.cloud.api import PloomberCloudAPI
     from ploomber.telemetry import telemetry
 
+    cloud_deprecation_warning()
     api = PloomberCloudAPI()
 
     if image:
@@ -694,6 +713,8 @@ def cloud_abort(run_id):
     """
     from ploomber.cloud.api import PloomberCloudAPI
     from ploomber.telemetry import telemetry
+
+    cloud_deprecation_warning()
 
     api = PloomberCloudAPI()
     api.run_abort(run_id)
@@ -738,6 +759,7 @@ def cloud_data(upload, delete, prefix, name):
     from ploomber.cloud.api import PloomberCloudAPI
     from ploomber.telemetry import telemetry
 
+    cloud_deprecation_warning()
     api = PloomberCloudAPI()
 
     # one arg max
@@ -779,6 +801,7 @@ def cloud_notebook(path_to_notebook, json):
     from ploomber.cloud import io
     from ploomber.telemetry import telemetry
 
+    cloud_deprecation_warning()
     # TODO: add unit test
     path_to_notebook = io.download_notebook_if_needed(path_to_notebook)
 
